@@ -1,34 +1,44 @@
-# .github/workflows/vercel-deploy.yml
 name: Deploy to Vercel with Env Sync
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      envhub_domain:
+        description: 'Custom EnvHub Domain (e.g., envhub.360magicians.com)'
+        required: true
 
 jobs:
   sync-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      ENVHUB_DOMAIN: ${{ github.event.inputs.envhub_domain }}
+      PROJECT_NAME: mbtq.dev
+      STAGE: prod
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Fetch ENV from EnvHub 360
+      - name: Fetch ENV from EnvHub
         run: |
-          curl "https://envhub.360magicians.com/api/envhub?project=mbtq.dev&stage=prod" > env.json
-          jq -r '.[] | "\(.key)=\(.value)"' env.json > .env
-          cat .env
+          echo "🔍 Fetching from $ENVHUB_DOMAIN"
+          curl -s -o env.json "https://$ENVHUB_DOMAIN/api/envhub?project=$PROJECT_NAME&stage=$STAGE"
+          cat env.json
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+          if jq -e . env.json >/dev/null 2>&1; then
+            jq -r '.[] | "\(.key)=\(.value)"' env.json > .env
+          else
+            echo "❌ Invalid JSON received from $ENVHUB_DOMAIN"
+            exit 1
+          fi
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build and Export (if static)
+      - name: Build
         run: npm run build
 
       - name: Deploy to Vercel
