@@ -1,72 +1,28 @@
+# 🤖 MBTQ GitHub Bot + Supabase Auth Portal
 
+This repository powers the **MBTQ Developer Platform Frontend** including:
 
-# 🔐 Supabase Auth Login – MBTQ Developer Platform Frontend
-
-This component provides a secure and Vercel-ready login page using Supabase Magic Link authentication.  
-It’s designed for **mbtq.dev** and any `*.mbtquniverse.com` frontend portal.
-
----
-
-## 🚀 Features
-
-- ✅ Fully client-compatible with Next.js / V0.dev
-- ✅ Uses `useEffect()` and async-safe lifecycle
-- ✅ Magic link sign-in (no passwords)
-- 🔁 Redirects to `/dashboard` after login (optional)
-- 🔐 Compatible with `supabase.mbtq.dev` backend
+1. A secure **Supabase Auth login** (Magic Link, Client Safe)
+2. A GitHub Bot powered by **Probot** for automation
+3. GitHub Actions for `.env` sync and Vercel deployment
+4. EnvHub 360 integration to manage Dev, Staging, and Prod configs
 
 ---
 
-## 📁 Location
+## 🔐 Supabase Login (Frontend)
 
-apps/
-dev-platform-frontend/
-auth/
-login.tsx
-pages/
-dashboard.tsx (optional)
+### Features
 
----
+- ✅ Magic Link email auth (no password)
+- ✅ Vercel + Supabase compatible
+- ✅ Client-safe via `useEffect` (no Suspense crashes)
+- ✅ Role-based UI supported
+- ✅ Auto-redirect to dashboard after login
 
-## 🔧 Required `.env` Vars
+### Setup
 
-These should be in your `.env` file (local or Vercel):
-
-```env
+```bash
+# Required .env
 NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-
-⸻
-
-⚙️ Setup Instructions
-	1.	Add Supabase URL and Key to .env.local or Vercel → Project Settings.
-	2.	Deploy via Vercel → supabase.mbtq.dev
-	3.	Magic link login prompts user for email.
-	4.	Use session logic in useEffect to route post-login.
-
-⸻
-
-🧠 Notes for GitHub Actions / Probot
-	•	This app is auto-bootstrapped using mbtq_brainflow_map.yaml 🤖
-	•	CI/CD scripts pull secrets from EnvHub 360 🔁
-	•	You can expand this to add:
-	•	GitHub OAuth
-	•	Role-bound dashboards
-	•	Audit logs via Fibonrose
-
-⸻
-
-✨ Credits
-
-Built by @pinkycollie for MBTQ Universe dev stack 💻🔮
-Powered by Supabase and Vercel
-
-⸻
-
-👁️‍🗨️ Secure the portal. Manage the magic. Welcome to the MBTQ Universe.
-
----
-
-
 
