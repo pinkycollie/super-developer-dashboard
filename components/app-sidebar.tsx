@@ -14,7 +14,9 @@ import {
   Layers,
   Cpu,
   Boxes,
+  LogOut,
 } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
 import {
   Sidebar,
   SidebarContent,
@@ -48,6 +50,7 @@ const clients = [
 
 export function AppSidebar() {
   const [searchQuery, setSearchQuery] = useState("")
+  const { user, signOut } = useAuth()
 
   const filteredProjects = projects.filter(
     (project) =>
@@ -205,15 +208,26 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <div className="mt-4 flex items-center gap-3 px-2">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder.svg" alt="User" />
-            <AvatarFallback>SD</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">Super Developer</span>
-            <span className="text-xs text-gray-400">Free Plan</span>
+        <div className="mt-4 space-y-2 px-2">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src="/placeholder.svg" alt="User" />
+              <AvatarFallback>{user?.email?.substring(0, 2).toUpperCase() || "SD"}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col flex-1">
+              <span className="text-sm font-medium truncate">{user?.email || "Guest"}</span>
+              <span className="text-xs text-gray-400">Free Plan</span>
+            </div>
           </div>
+          {user && (
+            <button
+              onClick={() => signOut()}
+              className="flex items-center gap-2 w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-md transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
+          )}
         </div>
       </SidebarFooter>
       <SidebarRail />
